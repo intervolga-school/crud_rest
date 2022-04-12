@@ -5,11 +5,12 @@ class Singleton
     private $pdo = null;
     protected function __construct()
     {
-        $host = '95.217.76.210';
-        $db = 'dbcrudvysochin';
-        $user = 'usercrudvysochin';
-        $pass = 'Y{MBb@)Jwdb&lKR';
-        $charset = 'utf8';
+        $host = '';
+        $db = '';
+        $user = '';
+        $pass = '';
+        $charset = '';
+        include "settings.php";
         $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
         $opt = [
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
