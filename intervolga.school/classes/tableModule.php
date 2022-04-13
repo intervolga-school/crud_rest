@@ -3,7 +3,7 @@ require_once "singleton.php";
 abstract class TableModule
 {
     abstract protected function getTableName():string;
-    public function Delete($id)
+    public function delete($id)
     {
 
         $sql="DELETE FROM ".$this->getTableName()." WHERE id=:id";
@@ -13,19 +13,7 @@ abstract class TableModule
             throw new PDOExpection("При удалении произошла ошибка");
         }
     }
-    public function Read():array
-    {
-        $sql="SELECT * FROM ".$this->getTableName()." WHERE 1 ";
-        $query=Singleton::prepare($sql);
-        $query->execute([]);
-        $result=array();
-        while($slice=$query->fetch())
-        {
-            $result[]=$slice;
-        }
-        return $result;
-    }
-    public function GetList($fields)
+    public function read($fields=array())
     {
         $sql="SELECT * FROM ".$this->getTableName()." WHERE 1 ";
         while ($field = current($fields))
@@ -42,7 +30,7 @@ abstract class TableModule
         }
         return $result;
     }
-    public function Create($fields)
+    public function create($fields)
     {
         $key="(";
         $keyparam="(";
@@ -65,7 +53,7 @@ abstract class TableModule
             throw new PDOExpection("При добавлении произошла ошибка");
         }
     }
-    public function Update($fields)
+    public function update($fields)
     {
         $keyparam="";
         $arField=array();

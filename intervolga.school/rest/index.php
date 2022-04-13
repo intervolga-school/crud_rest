@@ -6,7 +6,7 @@ $app = new Silex\Application();
 
 $app->get('/group/list.json', function() {
     $group=new Groups;
-    $list=$group->Read();
+    $list=$group->read();
     return json_encode($list);
 });
 
@@ -17,7 +17,7 @@ $app->post('/group/add-item', function () {
         $nameGroup=htmlspecialchars($_POST['groupName']);
         $speciality=htmlspecialchars($_POST['speciality']);
         $group=new Groups;
-        $group->Create(array("groupName"=>$nameGroup, "speciality"=>$speciality));
+        $group->create(array("groupName"=>$nameGroup, "speciality"=>$speciality));
         $lastid=$group->lastID();
         return json_encode(array("create-group"=>"yes", "create-id"=>$lastid));
     }
@@ -34,7 +34,7 @@ $app->post('/group/update-item', function()
     $speciality=htmlspecialchars($_POST["speciality"]);
     if($group->exists($idGroup) && $groupName)
     {
-        $group->Update(array("speciality"=>$speciality,"id"=>$idGroup,"groupName"=>$groupName));
+        $group->update(array("speciality"=>$speciality,"id"=>$idGroup,"groupName"=>$groupName));
         return json_encode(array("update-group"=>"yes", "id_update"=>$idGroup));
     }
     else
@@ -63,7 +63,7 @@ $app->post('/group/delete-item', function ()
 $app->get('/student/list.json', function() {
 
     $student=new Students;
-    $list=$student->Read();
+    $list=$student->read();
     return json_encode($list);
 });
 $app->post('/student/add-item', function () {
@@ -75,7 +75,7 @@ $app->post('/student/add-item', function () {
     if($name && $group->exists($idGroup))
     {
         $student=new Students;
-        $student->Create(array('name'=>$name,"idGroup"=>$idGroup,"surname"=>$surname,"patronymic"=>$patronymic));
+        $student->create(array('name'=>$name,"idGroup"=>$idGroup,"surname"=>$surname,"patronymic"=>$patronymic));
         $lastid=$student->lastID();
         return json_encode(array("create-student"=>"yes", "create-id"=>$lastid));
     }
@@ -94,7 +94,7 @@ $app->post('/student/update-item', function()
     $student=new Students;
     if($student->exists($id) &&  $name)
     {
-        $student->Update(array("id"=>$id,"name"=>$name,"surname"=>$surname,"patronymic"=>$patronymic,"idGroup"=>$idGroup));
+        $student->update(array("id"=>$id,"name"=>$name,"surname"=>$surname,"patronymic"=>$patronymic,"idGroup"=>$idGroup));
         return json_encode(array("update-student"=>"yes", "id_update"=>$id));
     }
     else
