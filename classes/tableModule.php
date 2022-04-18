@@ -7,6 +7,12 @@ abstract class TableModule
 {
 	abstract protected function getTableName(): string;
 
+	/*
+	 * @param int $id
+	 * @param array $fields
+	 * @return void
+	 * @throws PDOException
+	 * */
 	public function delete($id)
 	{
 		$sql = "DELETE FROM " . $this->getTableName() . " WHERE id=:id";
@@ -15,7 +21,9 @@ abstract class TableModule
 			throw new PDOException("При удалении произошла ошибка");
 		}
 	}
-
+	/*
+	 * @return array массив элементов таблицы
+	 * */
 	public function read($fields = array())
 	{
 		$sql = "SELECT * FROM " . $this->getTableName() . " WHERE 1 ";
@@ -30,12 +38,15 @@ abstract class TableModule
 		}
 		return $result;
 	}
-
+	/*
+	 * @return void
+	 * @throws PDOException
+	 * */
 	public function create($fields)
 	{
-		$keys = array();
-		$keyparam = array();
-		$arField = array();
+		$keys = [];
+		$keyparam = [];
+		$arField = [];
 		foreach ($fields as $key => $field) {
 			$keys[] = " " . $key;
 			$keyparam[] = " :" . $key;
@@ -51,13 +62,16 @@ abstract class TableModule
 			throw new PDOException("При добавлении произошла ошибка");
 		}
 	}
-
+	/*
+	 * @return void
+	 * @throws PDOException
+	 * */
 	public function update($fields)
 	{
-		$keyparam = array();
-		$arField = array();
+		$keyparam = [];
+		$arField = [];
 		foreach ($fields as $key => $field) {
-			if($key!="id"){
+			if ($key != "id") {
 				$keyparam[] = " `$key`=:" . $key;
 			}
 			$arField[":" . $key] = $field;
@@ -69,7 +83,9 @@ abstract class TableModule
 			throw new PDOException("При обновлении произошла ошибка");
 		}
 	}
-
+	/*
+	 * @return bool
+	 * */
 	public function exists($id): bool
 	{
 		$query = Singleton::prepare("SELECT * FROM " . $this->getTableName() . " WHERE id=" . $id);
@@ -77,7 +93,9 @@ abstract class TableModule
 		$find = $query->fetch();
 		return boolval($find);
 	}
-
+	/*
+	 * @return int возвращает id последнего добавленного элемента
+	 * */
 	public function lastID()
 	{
 		$query = Singleton::prepare("SELECT MAX(ID) FROM " . $this->getTableName());

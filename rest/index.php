@@ -4,6 +4,7 @@ require_once $_SERVER["DOCUMENT_ROOT"] . "/classes/groups.php";
 require_once $_SERVER["DOCUMENT_ROOT"] . "/classes/students.php";
 $app = new Silex\Application();
 
+//для групп:
 $app->get('/group/list.json', function () {
 	$group = new Groups;
 	$list = $group->read();
