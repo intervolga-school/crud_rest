@@ -22,9 +22,9 @@ class Singleton
 		$this->pdo = new PDO($dsn, $user, $pass, $opt);
 	}
 
-	private function __wakeup(){}
+	private function __wakeup() {}
 
-	private function __clone(){}
+	private function __clone() {}
 
 	public static function getObject()
 	{
