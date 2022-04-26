@@ -5,16 +5,14 @@ require_once $_SERVER["DOCUMENT_ROOT"] . "/classes/students.php";
 $app = new Silex\Application();
 
 //для групп:
-$app->get('/group/list.json', function () {
-	$app = new Silex\Application();
+$app->get('/group/list.json', function () use ($app){
 	$group = new Groups;
 	$list = $group->read();
 	return $app->json($list);
 });
 
-$app->post('/group/add-item', function () {
-	$app = new Silex\Application();
-	if ($_POST['groupName'] && $_POST['speciality']) {
+$app->post('/group/add-item', function () use ($app){
+	if (strlen($_POST['groupName']) && strlen($_POST['speciality'])) {
 		$nameGroup = $_POST['groupName'];
 		$speciality = $_POST['speciality'];
 		$group = new Groups;
@@ -29,13 +27,12 @@ $app->post('/group/add-item', function () {
 		return $app->json(array("create-group" => "no"));
 	}
 });
-$app->post('/group/update-item', function () {
-	$app = new Silex\Application();
+$app->post('/group/update-item', function ()use ($app) {
 	$group = new Groups;
 	$idGroup = intval($_POST["idGroup"]);
 	$groupName = $_POST["groupName"];
 	$speciality = $_POST["speciality"];
-	if ($group->exists($idGroup) && $groupName) {
+	if ($group->exists($idGroup) && strlen($groupName)) {
 		try {
 			$group->update(array("speciality" => $speciality, "id" => $idGroup, "groupName" => $groupName));
 			return $app->json(array("update-group" => "yes", "id_update" => $idGroup));
@@ -47,8 +44,7 @@ $app->post('/group/update-item', function () {
 	}
 });
 
-$app->post('/group/delete-item', function () {
-	$app = new Silex\Application();
+$app->post('/group/delete-item', function ()use ($app) {
 	$group = new Groups;
 	$id = intval($_POST["id"]);
 	if ($group->exists($id)) {
@@ -65,20 +61,18 @@ $app->post('/group/delete-item', function () {
 
 //для студентов:
 
-$app->get('/student/list.json', function () {
-	$app = new Silex\Application();
+$app->get('/student/list.json', function () use ($app){
 	$student = new Students;
 	$list = $student->read();
 	return $app->json($list);
 });
-$app->post('/student/add-item', function () {
-	$app = new Silex\Application();
+$app->post('/student/add-item', function () use ($app) {
 	$name = $_POST["name"];
 	$surname = $_POST["surname"];
 	$patronymic = $_POST["patronymic"];
 	$idGroup = intval($_POST["idGroup"]);
 	$group = new Groups;
-	if ($name && $group->exists($idGroup)) {
+	if (strlen($name) && $group->exists($idGroup)) {
 		$student = new Students;
 		try {
 			$student->create(array('name' => $name, "idGroup" => $idGroup, "surname" => $surname, "patronymic" => $patronymic));
@@ -91,15 +85,14 @@ $app->post('/student/add-item', function () {
 		return $app->json(array("create-student" => "no"));
 	}
 });
-$app->post('/student/update-item', function () {
-	$app = new Silex\Application();
+$app->post('/student/update-item', function () use ($app){
 	$id = intval($_POST["id"]);
 	$name = $_POST["name"];
 	$surname = $_POST["surname"];
 	$patronymic = $_POST["patronymic"];
 	$idGroup = intval($_POST["idGroup"]);
 	$student = new Students;
-	if ($student->exists($id) && $name) {
+	if ($student->exists($id) && strlen($name)) {
 		try {
 			$student->update(array("id" => $id, "name" => $name, "surname" => $surname, "patronymic" => $patronymic, "idGroup" => $idGroup));
 			return $app->json(array("update-student" => "yes", "id_update" => $id));
@@ -111,8 +104,7 @@ $app->post('/student/update-item', function () {
 	}
 });
 
-$app->post('/student/delete-item', function () {
-	$app = new Silex\Application();
+$app->post('/student/delete-item', function () use ($app) {
 	$id = intval($_POST["id"]);
 	$student = new Students;
 	if ($student->exists($id)) {
