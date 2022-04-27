@@ -1,7 +1,7 @@
 <?php
-require_once $_SERVER["DOCUMENT_ROOT"] . '/vendor/autoload.php';
-require_once $_SERVER["DOCUMENT_ROOT"] . "/classes/groups.php";
-require_once $_SERVER["DOCUMENT_ROOT"] . "/classes/students.php";
+require_once '../vendor/autoload.php';
+require_once "../classes/groups.php";
+require_once "../classes/students.php";
 $app = new Silex\Application();
 
 //для групп:
